@@ -49,7 +49,7 @@ namespace vindinium
     }
 
     [DataContract]
-    class Hero
+    public class Hero
     {
         [DataMember]
         internal int id;
