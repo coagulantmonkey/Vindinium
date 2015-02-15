@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using vindinium.Helpers;
 using vindinium.Interfaces;
 
 namespace vindinium
@@ -15,7 +16,7 @@ namespace vindinium
             watchGameLive = bool.Parse(ConfigManager.GetConfigKey("WatchGame"));
             IAIManager bot = new AIManager();
             bot.ViewUrlChanged += bot_ViewUrlChanged;
-            bot.Run();            
+            bot.Run();
         }
 
         private static void bot_ViewUrlChanged(object sender, string e)

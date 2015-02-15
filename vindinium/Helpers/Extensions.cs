@@ -18,5 +18,15 @@ namespace vindinium.Helpers
         {
             return new Vector2D(hero.pos.x, hero.pos.y);
         }
+
+        public static Vector2D Subtract(this Vector2D source, Vector2D target)
+        {
+            return new Vector2D((source.X - target.X), (source.Y - target.Y));
+        }
+
+        public static string DisplayString(this Vector2D source)
+        {
+            return string.Format("({0},{1})", source.X, source.Y);
+        }
     }
 }

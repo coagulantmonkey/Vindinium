@@ -23,6 +23,7 @@ namespace vindinium
         private bool printedMap;
         private ServerConnection serverConnection;
         private bool trainingMode;
+        private State lastState = State.NONE;
         public bool Finished { get; private set; }
         public string ViewURL { get; private set; }
         public event EventHandler<string> ViewUrlChanged = delegate { };
@@ -40,8 +41,8 @@ namespace vindinium
             byte[] byteArray = Encoding.UTF8.GetBytes(json);
             MemoryStream stream = new MemoryStream(byteArray);
 
-            DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(GameResponse));
-            GameResponse gameResponse = (GameResponse)ser.ReadObject(stream);
+            DataContractJsonSerializer serialiser = new DataContractJsonSerializer(typeof(GameResponse));
+            GameResponse gameResponse = (GameResponse)serialiser.ReadObject(stream);
 
             playURL = gameResponse.playUrl;
 
@@ -201,17 +202,27 @@ namespace vindinium
         {
             if (myHero.mineCount == 0)
             {
-                // TODO : FindNearestMine();
+                if (lastState != State.MOVING_TO_MINE)
+                {
+                    lastState = State.MOVING_TO_MINE;
+                    Vector2D destination = FindNearestNeutralMine();
+                    Pathfinder.CalculatePath(myHero.BoardPosition(), destination, board);
+                }                
             }
             else
             {
-                FindNearestEnemy();
+                if (lastState != State.MOVING_TO_ENEMY)
+                {
+                    lastState = State.MOVING_TO_ENEMY;
+                    Vector2D destination = FindNearestEnemy();
+                    Pathfinder.CalculatePath(myHero.BoardPosition(), destination, board);
+                }                
             }
 
-            serverConnection.SendCommand(playURL, Direction.Stay);
+            serverConnection.SendCommand(playURL, Pathfinder.GetNextMove(myHero.BoardPosition()));
         }
 
-        private void FindNearestEnemy()
+        private Vector2D FindNearestEnemy()
         {
             var target = heroes
                 .Select(hero => new { TargetVector = new Vector2D(hero.pos.x, hero.pos.y), Hero = hero })
@@ -221,7 +232,31 @@ namespace vindinium
                 .First();
 
 
-            Console.WriteLine("Closest enemy located at {0},{1}.", target.BoardPosition().X, target.BoardPosition().Y);
+            Console.WriteLine("Closest enemy located at {0}.", target.BoardPosition().DisplayString());
+            return new Vector2D(target.BoardPosition().X, target.BoardPosition().Y);
+        }
+
+        private Vector2D FindNearestNeutralMine()
+        {
+            List<Vector2D> neutralMines = new List<Vector2D>();
+
+            for (int row = 0; row < board.GetLength(0); row++)
+            {
+                for (int column = 0; column < board.GetLength(1); column++)
+                {
+                    if (board[row, column] == Tile.GOLD_MINE_NEUTRAL)
+                    {
+                        neutralMines.Add(new Vector2D(row, column));
+                    }
+                }
+            }
+
+            Vector2D nearestNeutralMine = neutralMines
+                .OrderBy(mineLocation => mineLocation.DistanceApart(myHero.BoardPosition()))
+                .First();
+
+            Console.WriteLine("Closest neutral mine located at {0}.", nearestNeutralMine.DisplayString());
+            return nearestNeutralMine;
         }
 
         private void OutputMapToConsole()

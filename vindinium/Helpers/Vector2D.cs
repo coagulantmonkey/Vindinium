@@ -23,5 +23,19 @@ namespace vindinium.Helpers
         {
             return (X * X) + (Y * Y);
         }
+
+        public override bool Equals(object obj)
+        {
+            Vector2D incomingVector = obj as Vector2D;
+
+            if (incomingVector != null)
+            {
+                return incomingVector.X == this.X && incomingVector.Y == this.Y;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }
