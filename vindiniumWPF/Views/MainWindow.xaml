@@ -1,0 +1,18 @@
+﻿<Window x:Class="vindiniumWPF.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Vindinium" Height="350" Width="525">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Menu
+            Grid.Row="0">
+            <MenuItem Header="_File">
+                <MenuItem Header="_Details" Command="{Binding ShowDetailsWindowCommand}"/>
+                <MenuItem Header="_Exit" Command="{Binding ExitCommand}"/>
+            </MenuItem>
+        </Menu>
+    </Grid>
+</Window>

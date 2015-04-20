@@ -1,0 +1,71 @@
+﻿<Window x:Class="vindiniumWPF.Views.DetailsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:converters="clr-namespace:vindiniumWPF.Converters"
+        Title="Details" Height="150" Width="250">
+    <Window.Resources>
+        <converters:BoolInverterConverter x:Key="BoolInverter"/>
+    </Window.Resources>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="5*"/>
+            <ColumnDefinition Width="7*"/>
+        </Grid.ColumnDefinitions>
+        
+        <Label
+            Grid.Row="0"
+            Grid.Column="0"
+            Content="Private Key"/>
+        
+        <TextBox
+            Grid.Row="0"
+            Grid.Column="1"
+            Text="{Binding PrivateKey}"/>
+        
+        <Label
+            Grid.Row="1"
+            Grid.Column="0"
+            Content="Play Mode"/>
+
+
+        <StackPanel
+            Grid.Row="1"
+            Grid.Column="1">
+            <RadioButton
+                GroupName="PlayMode"
+                Content="Training"
+                IsChecked="{Binding TrainingMode}"/>
+            <RadioButton
+                GroupName="PlayMode"
+                Content="Arena"
+                IsChecked="{Binding TrainingMode, Converter={StaticResource BoolInverter}}"/>
+        </StackPanel>
+
+        <Label
+            Grid.Row="2"
+            Grid.Column="0"
+            Content="Number of turns"/>
+        
+        <TextBox
+            Grid.Row="2"
+            Grid.Column="1"
+            Text="{Binding NumberOfTurns}"/>
+        
+        <Label
+            Grid.Row="3"
+            Grid.Column="0"
+            Content="Server URL"/>
+        
+        <TextBox
+            Grid.Row="3"
+            Grid.Column="1"
+            Text="{Binding ServerURL}"/>
+    </Grid>
+</Window>
