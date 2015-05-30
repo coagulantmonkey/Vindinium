@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 
-namespace vindiniumWPF.Converters
+namespace Common.Converters
 {
     class BoolInverterConverter : IValueConverter
     {

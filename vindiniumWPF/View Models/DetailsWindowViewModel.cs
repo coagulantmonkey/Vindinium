@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace vindiniumWPF.View_Models
+namespace Common.View_Models
 {
     public class DetailsWindowViewModel : ViewModelBase
     {
@@ -35,7 +35,8 @@ namespace vindiniumWPF.View_Models
         {
             return PrivateKey != initialSettings.PrivateKey
                 || NumberOfTurns != initialSettings.NumberOfTurns
-                || ServerURL != initialSettings.ServerURL;
+                || ServerURL != initialSettings.ServerURL
+                || TrainingMode != initialSettings.TrainingMode;
         }
     }
 }

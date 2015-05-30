@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace vindiniumWPF.Views
+namespace Common.Views
 {
     /// <summary>
     /// Interaction logic for DetailsWindow.xaml

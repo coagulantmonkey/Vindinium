@@ -5,10 +5,11 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using vindiniumWPF.View_Models;
-using vindiniumWPF.Views;
+using Common.View_Models;
+using Common.Views;
+using Common.Messaging;
 
-namespace vindiniumWPF
+namespace Common
 {
     /// <summary>
     /// Interaction logic for App.xaml
@@ -18,6 +19,8 @@ namespace vindiniumWPF
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
+
+            EventAggregator.Instance.Initialise();
 
             MainWindow view = new MainWindow();
             MainWindowViewModel viewModel = new MainWindowViewModel();

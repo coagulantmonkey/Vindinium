@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace vindiniumWPF.View_Models
+namespace Common.View_Models
 {
     public abstract class ViewModelBase : INotifyPropertyChanged
     {
