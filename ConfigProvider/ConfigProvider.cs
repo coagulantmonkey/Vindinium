@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using vindiniumWPF.Helpers;
+using Common.Helpers;
 
 namespace ConfigProvider
 {
@@ -18,6 +18,7 @@ namespace ConfigProvider
     {
         #region Members
         GameSettingsConfiguration gameSettings;
+        EventAggregator aggregator;
         #endregion
 
         #region IMessageConsumer
@@ -34,14 +35,20 @@ namespace ConfigProvider
         {
             if (message is ConfigRequestMessage)
             {
+                Log4netManager.DebugFormat("ConfigRequestMessage received.", typeof(ConfigProvider));
                 ProcessConfigRequest(message);
             }
             if (message is GameSettingsConfigUpdated)
             {
+                Log4netManager.DebugFormat("GameSettingsConfigUpdated received.", typeof(ConfigProvider));
                 ProcessGameSettingsUpdate(message);
             }
+        }
 
-        }        
+        public void RegisterAggregator(EventAggregator aggregator)
+        {
+            this.aggregator = aggregator;
+        }
         #endregion
 
         public ConfigProvider()
@@ -67,7 +74,7 @@ namespace ConfigProvider
 
         private void ProcessGameSettingsUpdate(InternalMessage message)
         {
- 
+            // TODO : Handle ProcessGameSettingsUpdate message
         }
 
         private void ReturnRequestedConfigSection(ConfigRequestMessage message)
@@ -85,6 +92,6 @@ namespace ConfigProvider
                         message.RequestedSection.ToString()), typeof(ConfigProvider));
                     break;
             }
-        }
+        }        
     }
 }
