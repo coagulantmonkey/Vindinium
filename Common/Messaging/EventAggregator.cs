@@ -9,10 +9,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using vindiniumWPF.Helpers;
-using vindiniumWPF.View_Models;
+using Common.Helpers;
 
-namespace vindiniumWPF.Messaging
+namespace Common.Messaging
 {
     public sealed class EventAggregator
     {
@@ -28,12 +27,12 @@ namespace vindiniumWPF.Messaging
 
         #region Singleton Implementation
         static EventAggregator()
-        {             
+        {
         }
 
         private EventAggregator()
         {
-            Initialise();
+            //Initialise();
         }
 
         public static EventAggregator Instance
@@ -85,7 +84,7 @@ namespace vindiniumWPF.Messaging
 
         private void AddHandledMessageTypesToDictionary(IMessageConsumer listener)
         {
-            foreach(Type messageType in listener.GetMessageTypesHandled())
+            foreach (Type messageType in listener.GetMessageTypesHandled())
             {
                 RegisterAsListener(messageType, listener);
             }
@@ -110,14 +109,14 @@ namespace vindiniumWPF.Messaging
                         return existingList;
                     });
 
-                Log4netManager.DebugFormat(string.Format("Added {0} as a listener for {1}.", listener.GetType().Name, messageType.Name), 
+                Log4netManager.DebugFormat(string.Format("Added {0} as a listener for {1}.", listener.GetType().Name, messageType.Name),
                     typeof(EventAggregator));
 
                 return true;
             }
             catch (Exception ex)
             {
-                Log4netManager.LogException(string.Format("Could not add {0} as a listener for {1}.", listener.GetType().Name, messageType.Name), 
+                Log4netManager.LogException(string.Format("Could not add {0} as a listener for {1}.", listener.GetType().Name, messageType.Name),
                     ex, typeof(EventAggregator));
 
                 return false;

@@ -9,7 +9,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace vindiniumWPF.Helpers
+namespace Common.Helpers
 {
     public static class Log4netManager
     {
@@ -38,7 +38,7 @@ namespace vindiniumWPF.Helpers
 
         private static string FormatString(string message, Type callingClass, string callingMemberName)
         {
-            return string.Format("{0} : {1} -> {2}.", callingClass.Name, callingMemberName, message);
+            return string.Format("{0} : {1} -> {2}", callingClass.Name, callingMemberName, message);
         }
 
         private static void Debug(object message)

@@ -16,7 +16,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\vindiniumWPF\bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -31,12 +31,14 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="log4net">
-      <HintPath>..\..\..\Users\Michael\Desktop\Stuff\log4net 1.2.13\log4net-1.2.13\bin\net\4.0\release\log4net.dll</HintPath>
+      <HintPath>..\..\..\Users\Michael\Desktop\Stuff\Software\log4net 1.2.13\log4net-1.2.13\bin\net\4.0\release\log4net.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -46,25 +48,37 @@
   <ItemGroup>
     <Compile Include="Configuration\AvailableSections.cs" />
     <Compile Include="Configuration\GameSettingsConfiguration.cs" />
+    <Compile Include="DataContracts\Board.cs" />
+    <Compile Include="DataContracts\Game.cs" />
+    <Compile Include="DataContracts\GameResponse.cs" />
+    <Compile Include="DataContracts\Hero.cs" />
+    <Compile Include="DataContracts\Position.cs" />
+    <Compile Include="Enums\Direction.cs" />
+    <Compile Include="Enums\State.cs" />
+    <Compile Include="Enums\Tile.cs" />
+    <Compile Include="Helpers\AStarNode.cs" />
     <Compile Include="Helpers\Extensions.cs" />
     <Compile Include="Helpers\RelayCommand.cs" />
     <Compile Include="Helpers\Log4netManager.cs" />
+    <Compile Include="Helpers\Vector2D.cs" />
+    <Compile Include="Messaging\EventAggregator.cs" />
     <Compile Include="Messaging\IMessageConsumer.cs" />
     <Compile Include="Messaging\Messages\ConfigRequestMessage.cs" />
     <Compile Include="Messaging\Messages\GameSettingsConfigUpdated.cs" />
     <Compile Include="Messaging\Messages\InternalMessage.cs" />
+    <Compile Include="Messaging\Messages\NewGameStartedMessage.cs" />
     <Compile Include="Messaging\Messages\StartNewGameMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="log4net.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <None Include="Configuration\log4net.config">
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy /E /Y "$(ProjectDir)bin\Debug\log4net.config" "$(SolutionDir)\vindiniumWPF\bin\debug\"</PostBuildEvent>
+    <PostBuildEvent>xcopy /E /Y "$(ProjectDir)\Configuration\log4net.config" "$(SolutionDir)\vindiniumWPF\bin\debug\"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
