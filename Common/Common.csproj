@@ -31,7 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="log4net">
-      <HintPath>..\..\..\Users\Michael\Desktop\Stuff\Software\log4net 1.2.13\log4net-1.2.13\bin\net\4.0\release\log4net.dll</HintPath>
+      <HintPath>..\External Libraries\log4net.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="System" />

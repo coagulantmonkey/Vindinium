@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "vindiniumWPFHost", "vindiniumWPF\vindiniumWPFHost.csproj", "{892263FA-9724-4C33-87B1-DEDD7A4A1F30}"
 EndProject
@@ -18,6 +18,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AIController", "AIController\AIController.csproj", "{1392DDA5-E71E-4BCA-B142-F2EE6968A262}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pathdinder", "Pathdinder\Pathdinder.csproj", "{0FF94808-D206-4958-AD01-77AD45579FA6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "External Libraries", "External Libraries", "{18C4F0C8-2955-4CE8-8699-F18CF781B334}"
+	ProjectSection(SolutionItems) = preProject
+		External Libraries\log4net.dll = External Libraries\log4net.dll
+		External Libraries\log4net.xml = External Libraries\log4net.xml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

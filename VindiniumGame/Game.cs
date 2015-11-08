@@ -91,7 +91,6 @@ namespace VindiniumGame
             else if (_currentTurn >= _maxTurns)
             {
                 Log4netManager.DebugFormat("Game over!", typeof(Game));
-                // TODO - Handle game over
             }
         }
 

@@ -14,34 +14,27 @@ namespace AIController
     {
         #region Members
         private State _lastState = State.NONE;
+        private Pathfinder _pathfinder;
         #endregion
 
         public string DetermineMove(Hero myHero, Tile[,] board, List<Hero> heroes)
         {
-            if (myHero.mineCount == 0)
+            if (_pathfinder == null)
+                _pathfinder = new Pathfinder();
+
+            Log4netManager.DebugFormat("Moving towards nearest mine.", typeof(AIManager));
+
+            if (_pathfinder.MovesRemaining())
             {
-                Log4netManager.DebugFormat("Hero has 0 mines. Moving towards closest neutral mine.", typeof(AIManager));
-                if (_lastState != State.MOVING_TO_MINE)
-                {
-                    Log4netManager.DebugFormat("Last state was not Moving To Mine. Determining closest neutral mine.", typeof(AIManager));
-                    _lastState = State.MOVING_TO_MINE;
-                    Vector2D destination = FindNearestNeutralMine(board, myHero);
-                    Pathfinder.CalculatePath(myHero.BoardPosition(), destination, board);
-                }
+                Log4netManager.DebugFormat("Moves left in current path.", typeof(AIManager));
+                return _pathfinder.GetNextMove(myHero.BoardPosition());
             }
             else
             {
-                Log4netManager.DebugFormat("Hero has a mine. Moving towards closest enemy.", typeof(AIManager));
-                if (_lastState != State.MOVING_TO_ENEMY)
-                {
-                    Log4netManager.DebugFormat("Last state was not Moving To Enemy. Determining closest enemy.", typeof(AIManager));
-                    _lastState = State.MOVING_TO_ENEMY;
-                    Vector2D destination = FindNearestEnemy(heroes, myHero);
-                    Pathfinder.CalculatePath(myHero.BoardPosition(), destination, board);
-                }
+                Log4netManager.DebugFormat("No moves left in current path.", typeof(AIManager));
+                _pathfinder.CalculatePath(myHero.BoardPosition(), FindNearestNeutralMine(board, myHero), board);
+                return _pathfinder.GetNextMove(myHero.BoardPosition());
             }
-
-            return Pathfinder.GetNextMove(myHero.BoardPosition());
         }
 
         private Vector2D FindNearestEnemy(List<Hero> heroes, Hero myHero)
@@ -88,6 +81,12 @@ namespace AIController
                 Log4netManager.DebugFormat("Found 0 neutral mines, returning hero's position.", typeof(AIManager));
                 return myHero.BoardPosition();
             }
+        }
+
+        private Vector2D FindNearestUnownedMine(Tile[,] board, Hero myHero)
+        {
+            // TODO
+            return new Vector2D(0,0);
         }
     }
 }

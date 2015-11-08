@@ -8,21 +8,25 @@ using System.Threading.Tasks;
 
 namespace Pathdinder
 {
-    public static class Pathfinder
+    public class Pathfinder
     {
-        private static List<AStarNode> openNodes = new List<AStarNode>();
-        private static List<AStarNode> closedNodes = new List<AStarNode>();
-        private static List<AStarNode> path = new List<AStarNode>();
-        private static Tile[,] worldMap;
-        private static Vector2D startingPoint;
-        private static Vector2D destination;
-        private static int boardHeight;
-        private static int boardWidth;
+        private List<AStarNode> openNodes = new List<AStarNode>();
+        private List<AStarNode> closedNodes = new List<AStarNode>();
+        private List<AStarNode> path = new List<AStarNode>();
+        private Tile[,] worldMap;
+        private Vector2D startingPoint;
+        private Vector2D destination;
+        private int boardHeight;
+        private int boardWidth;
 
-        public static void CalculatePath(Vector2D startPoint, Vector2D endPoint, Tile[,] board)
+        public void CalculatePath(Vector2D startPoint, Vector2D endPoint, Tile[,] board)
         {
             Log4netManager.DebugFormat(string.Format("Calculating path between {0} and {1}.", startPoint.DisplayString(), endPoint.DisplayString()),
                 typeof(Pathfinder));
+
+            openNodes.Clear();
+            closedNodes.Clear();
+            path.Clear();
 
             worldMap = board;
             boardHeight = worldMap.GetUpperBound(0);
@@ -40,7 +44,7 @@ namespace Pathdinder
             }
         }
 
-        private static bool BeginPathFinding()
+        private bool BeginPathFinding()
         {
 
             AStarNode currentNode = new AStarNode()
@@ -74,7 +78,7 @@ namespace Pathdinder
             return true;
         }
 
-        private static void CheckAdjacentNodes(AStarNode currentNode)
+        private void CheckAdjacentNodes(AStarNode currentNode)
         {
             Vector2D tempVector = currentNode.WorldPosition;
 
@@ -120,7 +124,7 @@ namespace Pathdinder
             }
         }
 
-        private static void FilterNode(AStarNode node)
+        private void FilterNode(AStarNode node)
         {
             AStarNode existingClosedNode = closedNodes
                 .Where(closedNode => closedNode.Equals(node))
@@ -150,7 +154,7 @@ namespace Pathdinder
             }
         }
 
-        private static bool TargetFound()
+        private bool TargetFound()
         {
             AStarNode targetNode = closedNodes
                 .Where(closedNode => closedNode.WorldPosition.Equals(destination))
@@ -159,7 +163,7 @@ namespace Pathdinder
             return (targetNode != null);
         }
 
-        private static void ConstructPath()
+        private void ConstructPath()
         {
             AStarNode targetNode = closedNodes
                 .Where(closedNode => closedNode.WorldPosition.Equals(destination))
@@ -187,7 +191,7 @@ namespace Pathdinder
             }
         }
 
-        public static string GetNextMove(Vector2D currentPosition)
+        public string GetNextMove(Vector2D currentPosition)
         {
             if (path.Any())
             {
@@ -195,6 +199,9 @@ namespace Pathdinder
                 path.RemoveAt(0);
 
                 Vector2D directionVector = nextNode.WorldPosition.Subtract(currentPosition);
+
+                Log4netManager.DebugFormat(string.Format("Current position is {0}.", currentPosition.DisplayString()), typeof(Pathfinder));
+                Log4netManager.DebugFormat(string.Format("Next node position is {0}.", nextNode.WorldPosition.DisplayString()), typeof(Pathfinder));
 
                 if (directionVector.Length() == 1)
                 {
@@ -219,6 +226,9 @@ namespace Pathdinder
                 {
                     Log4netManager.ErrorFormat(string.Format("Direction vector was not equal to 1. Length() returned {0}. Returning stay command.", 
                         directionVector.Length()), typeof(Pathfinder));
+                    Log4netManager.ErrorFormat(string.Format("Direction vector is {0}.", directionVector.DisplayString()), typeof(Pathfinder));
+
+                    path.Clear();
                 }
             }
             else
@@ -227,6 +237,11 @@ namespace Pathdinder
             }
 
             return Direction.Stay;
+        }
+
+        public bool MovesRemaining()
+        {
+            return path.Any();
         }
     }
 }
