@@ -5,10 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using Common.Helpers;
 
 namespace ConfigProvider
@@ -16,12 +12,10 @@ namespace ConfigProvider
     [Export(typeof(IMessageConsumer))]
     public class ConfigProvider : IMessageConsumer
     {
-        #region Members
-        GameSettingsConfiguration gameSettings;
-        EventAggregator aggregator;
-        #endregion
+        private EventAggregator _aggregator;
+        private GameSettingsConfiguration _gameSettings;
+        private readonly Log4netManager _logger;
 
-        #region IMessageConsumer
         public List<Type> GetMessageTypesHandled()
         {
             return new List<Type>
@@ -35,24 +29,24 @@ namespace ConfigProvider
         {
             if (message is ConfigRequestMessage)
             {
-                Log4netManager.DebugFormat("ConfigRequestMessage received.", typeof(ConfigProvider));
+                _logger.DebugFormat("ConfigRequestMessage received.", typeof(ConfigProvider));
                 ProcessConfigRequest(message);
             }
             if (message is GameSettingsConfigUpdated)
             {
-                Log4netManager.DebugFormat("GameSettingsConfigUpdated received.", typeof(ConfigProvider));
+                _logger.DebugFormat("GameSettingsConfigUpdated received.", typeof(ConfigProvider));
                 ProcessGameSettingsUpdate(message);
             }
         }
 
         public void RegisterAggregator(EventAggregator aggregator)
         {
-            this.aggregator = aggregator;
+            _aggregator = aggregator;
         }
-        #endregion
 
         public ConfigProvider()
         {
+            _logger = new Log4netManager();
         }
 
         private void ProcessConfigRequest(InternalMessage message)
@@ -67,7 +61,7 @@ namespace ConfigProvider
                 }
                 else
                 {
-                    Log4netManager.DebugFormat("There was no callback associated with the Config Request. Message was not processed.", typeof(ConfigProvider));
+                    _logger.DebugFormat("There was no callback associated with the Config Request. Message was not processed.", typeof(ConfigProvider));
                 }
             }
         }
@@ -82,16 +76,16 @@ namespace ConfigProvider
             switch (message.RequestedSection)
             {
                 case AvailableSections.GameSettings:
-                    if (gameSettings == null)
-                        gameSettings = (GameSettingsConfiguration)ConfigurationManager.GetSection("ApplicationConfiguration/GameSettingsConfiguration");
+                    if (_gameSettings == null)
+                        _gameSettings = (GameSettingsConfiguration)ConfigurationManager.GetSection("ApplicationConfiguration/GameSettingsConfiguration");
 
-                    message.Callback(gameSettings);
+                    message.Callback(_gameSettings);
                     break;
                 default:
-                    Log4netManager.WarnFormat(string.Format("The requested section, {0} was not handled. The callback was not invoked.", 
+                    _logger.WarnFormat(string.Format("The requested section, {0} was not handled. The callback was not invoked.",
                         message.RequestedSection.ToString()), typeof(ConfigProvider));
                     break;
             }
-        }        
+        }
     }
 }

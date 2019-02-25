@@ -5,33 +5,23 @@ using Common.Messaging.Messages;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using Common.Helpers;
 using Common.Views;
-using System.ComponentModel.Composition;
 using System.Collections.ObjectModel;
 using System.Windows.Controls;
-using System.Diagnostics;
-using System.Reflection;
-using System.Windows.Navigation;
-using System.Runtime.InteropServices;
 
 namespace Common.View_Models
 {
     class MainWindowViewModel : ViewModelBase, IMessageConsumer
     {
-        #region Members
+        private readonly Log4netManager _logger;
+
         public ICommand ExitCommand { get; set; }
         public ICommand ShowDetailsWindowCommand { get; set; }
         public ICommand StartNewGameCommand { get; set; }
         public ObservableCollection<TabItem> Tabs { get; set; }
-        #endregion
 
-        #region IMessageConsumer
         public List<Type> GetMessageTypesHandled()
         {
             throw new NotImplementedException();
@@ -41,7 +31,6 @@ namespace Common.View_Models
         {
             throw new NotImplementedException();
         }
-        #endregion
 
         public MainWindowViewModel()
         {
@@ -98,7 +87,7 @@ namespace Common.View_Models
             }
             else
             {
-                Log4netManager.ErrorFormat("Received a Config Section that could not be cast to a Game Settings Configuration section, unable to show Details Window", GetType());
+                _logger.ErrorFormat("Received a Config Section that could not be cast to a Game Settings Configuration section, unable to show Details Window", GetType());
             }
         }
 
@@ -118,7 +107,7 @@ namespace Common.View_Models
             }
             else
             {
-                Log4netManager.ErrorFormat("Received a Config Section that could not be cast to a Game Settings Configuration section, unable to start a new game",
+                _logger.ErrorFormat("Received a Config Section that could not be cast to a Game Settings Configuration section, unable to start a new game",
                     GetType());
             }
         }
@@ -127,7 +116,7 @@ namespace Common.View_Models
         {
             if (message is NewGameStartedMessage)
             {
-                Log4netManager.DebugFormat("NewGameStartedMessage received.", typeof(MainWindowViewModel));
+                _logger.DebugFormat("NewGameStartedMessage received.", typeof(MainWindowViewModel));
                 NewGameStarted(message as NewGameStartedMessage);
             }
         }

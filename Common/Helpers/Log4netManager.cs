@@ -1,21 +1,17 @@
 ﻿using log4net;
 using log4net.Config;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Common.Helpers
 {
-    public static class Log4netManager
+    public class Log4netManager
     {
-        private static ILog Logger;
+        private ILog _logger;
 
-        static Log4netManager()
+        public Log4netManager()
         {
             try
             {
@@ -25,7 +21,7 @@ namespace Common.Helpers
                 bool exists = File.Exists(filePath);
 
                 XmlConfigurator.Configure(new FileInfo(filePath));
-                Logger = log4net.LogManager.GetLogger("Vindinium");
+                _logger = log4net.LogManager.GetLogger("Vindinium");
             }
             catch (Exception ex)
             {
@@ -34,231 +30,227 @@ namespace Common.Helpers
             }
         }
 
-        #region Private Methods
-
-        private static string FormatString(string message, Type callingClass, string callingMemberName)
+        private string FormatString(string message, Type callingClass, string callingMemberName)
         {
             return string.Format("{0} : {1} -> {2}", callingClass.Name, callingMemberName, message);
         }
 
-        private static void Debug(object message)
+        private void Debug(object message)
         {
-            Logger.Debug(message);
+            _logger.Debug(message);
         }
 
-        private static void Debug(object message, Exception exception)
+        private void Debug(object message, Exception exception)
         {
-            Logger.Debug(message, exception);
+            _logger.Debug(message, exception);
         }
 
-        private static void DebugFormat(string format, params object[] args)
+        private void DebugFormat(string format, params object[] args)
         {
-            Logger.DebugFormat(format, args);
+            _logger.DebugFormat(format, args);
         }
 
-        private static void DebugFormat(string format, object arg0)
+        private void DebugFormat(string format, object arg0)
         {
-            Logger.DebugFormat(format, arg0);
+            _logger.DebugFormat(format, arg0);
         }
 
-        private static void DebugFormat(IFormatProvider provider, string format, params object[] args)
+        private void DebugFormat(IFormatProvider provider, string format, params object[] args)
         {
-            Logger.DebugFormat(provider, format, args);
+            _logger.DebugFormat(provider, format, args);
         }
 
-        private static void DebugFormat(string format, object arg0, object arg1)
+        private void DebugFormat(string format, object arg0, object arg1)
         {
-            Logger.DebugFormat(format, arg0, arg1);
+            _logger.DebugFormat(format, arg0, arg1);
         }
 
-        private static void DebugFormat(string format, object arg0, object arg1, object arg2)
+        private void DebugFormat(string format, object arg0, object arg1, object arg2)
         {
-            Logger.DebugFormat(format, arg0, arg1, arg2);
+            _logger.DebugFormat(format, arg0, arg1, arg2);
         }
 
-        private static void Error(object message)
+        private void Error(object message)
         {
-            Logger.Error(message);
+            _logger.Error(message);
         }
 
-        private static void Error(object message, Exception exception)
+        private void Error(object message, Exception exception)
         {
-            Logger.Error(message, exception);
+            _logger.Error(message, exception);
         }
 
-        private static void ErrorFormat(string format, params object[] args)
+        private void ErrorFormat(string format, params object[] args)
         {
-            Logger.ErrorFormat(format, args);
+            _logger.ErrorFormat(format, args);
         }
 
-        private static void ErrorFormat(string format, object arg0)
+        private void ErrorFormat(string format, object arg0)
         {
-            Logger.ErrorFormat(format, arg0);
+            _logger.ErrorFormat(format, arg0);
         }
 
-        private static void ErrorFormat(IFormatProvider provider, string format, params object[] args)
+        private void ErrorFormat(IFormatProvider provider, string format, params object[] args)
         {
-            Logger.ErrorFormat(provider, format, args);
+            _logger.ErrorFormat(provider, format, args);
         }
 
-        private static void ErrorFormat(string format, object arg0, object arg1)
+        private void ErrorFormat(string format, object arg0, object arg1)
         {
-            Logger.ErrorFormat(format, arg0, arg1);
+            _logger.ErrorFormat(format, arg0, arg1);
         }
 
-        private static void ErrorFormat(string format, object arg0, object arg1, object arg2)
+        private void ErrorFormat(string format, object arg0, object arg1, object arg2)
         {
-            Logger.ErrorFormat(format, arg0, arg1, arg2);
+            _logger.ErrorFormat(format, arg0, arg1, arg2);
         }
 
-        private static void Fatal(object message)
+        private void Fatal(object message)
         {
-            Logger.Fatal(message);
+            _logger.Fatal(message);
         }
 
-        private static void Fatal(object message, Exception exception)
+        private void Fatal(object message, Exception exception)
         {
-            Logger.Fatal(message, exception);
+            _logger.Fatal(message, exception);
         }
 
-        private static void FatalFormat(string format, params object[] args)
+        private void FatalFormat(string format, params object[] args)
         {
-            Logger.FatalFormat(format, args);
+            _logger.FatalFormat(format, args);
         }
 
-        private static void FatalFormat(string format, object arg0)
+        private void FatalFormat(string format, object arg0)
         {
-            Logger.FatalFormat(format, arg0);
+            _logger.FatalFormat(format, arg0);
         }
 
-        private static void FatalFormat(IFormatProvider provider, string format, params object[] args)
+        private void FatalFormat(IFormatProvider provider, string format, params object[] args)
         {
-            Logger.FatalFormat(provider, format, args);
+            _logger.FatalFormat(provider, format, args);
         }
 
-        private static void FatalFormat(string format, object arg0, object arg1)
+        private void FatalFormat(string format, object arg0, object arg1)
         {
-            Logger.FatalFormat(format, arg0, arg1);
+            _logger.FatalFormat(format, arg0, arg1);
         }
 
-        private static void FatalFormat(string format, object arg0, object arg1, object arg2)
+        private void FatalFormat(string format, object arg0, object arg1, object arg2)
         {
-            Logger.FatalFormat(format, arg0, arg1, arg2);
+            _logger.FatalFormat(format, arg0, arg1, arg2);
         }
 
-        private static void Info(object message)
+        private void Info(object message)
         {
-            Logger.Info(message);
+            _logger.Info(message);
         }
 
-        private static void Info(object message, Exception exception)
+        private void Info(object message, Exception exception)
         {
-            Logger.Info(message, exception);
+            _logger.Info(message, exception);
         }
 
-        private static void InfoFormat(string format, params object[] args)
+        private void InfoFormat(string format, params object[] args)
         {
-            Logger.InfoFormat(format, args);
+            _logger.InfoFormat(format, args);
         }
 
-        private static void InfoFormat(string format, object arg0)
+        private void InfoFormat(string format, object arg0)
         {
-            Logger.InfoFormat(format, arg0);
+            _logger.InfoFormat(format, arg0);
         }
 
-        private static void InfoFormat(IFormatProvider provider, string format, params object[] args)
+        private void InfoFormat(IFormatProvider provider, string format, params object[] args)
         {
-            Logger.InfoFormat(provider, format, args);
+            _logger.InfoFormat(provider, format, args);
         }
 
-        private static void InfoFormat(string format, object arg0, object arg1)
+        private void InfoFormat(string format, object arg0, object arg1)
         {
-            Logger.InfoFormat(format, arg0, arg1);
+            _logger.InfoFormat(format, arg0, arg1);
         }
 
-        private static void InfoFormat(string format, object arg0, object arg1, object arg2)
+        private void InfoFormat(string format, object arg0, object arg1, object arg2)
         {
-            Logger.InfoFormat(format, arg0, arg1, arg2);
+            _logger.InfoFormat(format, arg0, arg1, arg2);
         }
 
-        private static void Warn(object message)
+        private void Warn(object message)
         {
-            Logger.Warn(message);
+            _logger.Warn(message);
         }
 
-        private static void Warn(object message, Exception exception)
+        private void Warn(object message, Exception exception)
         {
-            Logger.Warn(message, exception);
+            _logger.Warn(message, exception);
         }
 
-        private static void WarnFormat(string format, params object[] args)
+        private void WarnFormat(string format, params object[] args)
         {
-            Logger.WarnFormat(format, args);
+            _logger.WarnFormat(format, args);
         }
 
-        private static void WarnFormat(string format, object arg0)
+        private void WarnFormat(string format, object arg0)
         {
-            Logger.WarnFormat(format, arg0);
+            _logger.WarnFormat(format, arg0);
         }
 
-        private static void WarnFormat(IFormatProvider provider, string format, params object[] args)
+        private void WarnFormat(IFormatProvider provider, string format, params object[] args)
         {
-            Logger.WarnFormat(provider, format, args);
+            _logger.WarnFormat(provider, format, args);
         }
 
-        private static void WarnFormat(string format, object arg0, object arg1)
+        private void WarnFormat(string format, object arg0, object arg1)
         {
-            Logger.WarnFormat(format, arg0, arg1);
+            _logger.WarnFormat(format, arg0, arg1);
         }
 
-        private static void WarnFormat(string format, object arg0, object arg1, object arg2)
+        private void WarnFormat(string format, object arg0, object arg1, object arg2)
         {
-            Logger.WarnFormat(format, arg0, arg1, arg2);
+            _logger.WarnFormat(format, arg0, arg1, arg2);
         }
 
-        #endregion
-
-        public static bool IsDebugEnabled
+        public bool IsDebugEnabled
         {
-            get { return Logger.IsDebugEnabled; }
+            get { return _logger.IsDebugEnabled; }
         }
 
-        public static bool IsErrorEnabled
+        public bool IsErrorEnabled
         {
-            get { return Logger.IsErrorEnabled; }
+            get { return _logger.IsErrorEnabled; }
         }
 
-        public static bool IsFatalEnabled
+        public bool IsFatalEnabled
         {
-            get { return Logger.IsFatalEnabled; }
+            get { return _logger.IsFatalEnabled; }
         }
 
-        public static bool IsInfoEnabled
+        public bool IsInfoEnabled
         {
-            get { return Logger.IsInfoEnabled; }
+            get { return _logger.IsInfoEnabled; }
         }
 
-        public static bool IsWarnEnabled
+        public bool IsWarnEnabled
         {
-            get { return Logger.IsWarnEnabled; }
+            get { return _logger.IsWarnEnabled; }
         }
 
-        public static void DebugFormat(string message, Type callingClass, [CallerMemberName]string methodName = "")
+        public void DebugFormat(string message, Type callingClass, [CallerMemberName]string methodName = "")
         {
             DebugFormat(FormatString(message, callingClass, methodName));
         }
 
-        public static void ErrorFormat(string message, Type callingClass, [CallerMemberName]string methodName = "")
+        public void ErrorFormat(string message, Type callingClass, [CallerMemberName]string methodName = "")
         {
             ErrorFormat(FormatString(message, callingClass, methodName));
         }
 
-        public static void LogException(string Message, Exception ex, Type callingClass, [CallerMemberName]string methodName = "")
+        public void LogException(string Message, Exception ex, Type callingClass, [CallerMemberName]string methodName = "")
         {
             ErrorFormat(FormatString(string.Format("Exception caught and logged; \n{0}, \n{1}.", ex, Message), callingClass, methodName));
         }
 
-        public static void WarnFormat(string message, Type callingClass, [CallerMemberName]string methodName = "")
+        public void WarnFormat(string message, Type callingClass, [CallerMemberName]string methodName = "")
         {
             WarnFormat(FormatString(message, callingClass, methodName));
         }

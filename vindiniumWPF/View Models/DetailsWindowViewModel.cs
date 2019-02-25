@@ -1,21 +1,15 @@
 ﻿using Common.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Common.View_Models
 {
     public class DetailsWindowViewModel : ViewModelBase
     {
-        #region Members
+        private GameSettingsConfiguration initialSettings;
+
         public string PrivateKey { get; set; }
         public int NumberOfTurns { get; set; }
         public string ServerURL { get; set; }
         public bool TrainingMode { get; set; }
-        private GameSettingsConfiguration initialSettings;
-        #endregion
 
         public DetailsWindowViewModel()
         {

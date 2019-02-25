@@ -1,25 +1,21 @@
 ﻿using Common.Helpers;
 using Common.Messaging.Messages;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace VindiniumGame
 {
     public class ServerConnection
     {
-        #region Members
+        private readonly Log4netManager _logger;
+
         public string PrivateKey { get; private set; }
         public int NumberOfTurns { get; set; }
         public string ServerURL { get; private set; }
         public bool TrainingMode { get; set; }
         public EventHandler<string> DataReceived = delegate { };
         public EventHandler<string> ErrorOccurred = delegate { };
-        #endregion
 
         public ServerConnection(StartNewGameMessage message)
         {
@@ -59,7 +55,7 @@ namespace VindiniumGame
 
         public void SendCommand(string playUrl, string direction)
         {
-            Log4netManager.DebugFormat(string.Format("Sending {0} command to {1}.", direction, playUrl), typeof(ServerConnection));
+            _logger.DebugFormat(string.Format("Sending {0} command to {1}.", direction, playUrl), typeof(ServerConnection));
 
             string myParameters = "key=" + PrivateKey + "&dir=" + direction;
 

@@ -4,8 +4,6 @@ using Common.Messaging.Messages;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using VindiniumGame;
 
@@ -14,12 +12,10 @@ namespace NewGameProvider
     [Export(typeof(IMessageConsumer))]
     public class NewGameProvider : IMessageConsumer
     {
-        #region Members
         private EventAggregator aggregator;
         private List<Game> _games;
-        #endregion
+        private readonly Log4netManager _logger;
 
-        #region IMessageConsumer
         public List<Type> GetMessageTypesHandled()
         {
             return new List<Type>
@@ -32,7 +28,7 @@ namespace NewGameProvider
         {
             if (message is StartNewGameMessage)
             {
-                Log4netManager.DebugFormat("StartNewGameMessage received.", typeof(NewGameProvider));
+                _logger.DebugFormat("StartNewGameMessage received.", typeof(NewGameProvider));
                 Task.Factory.StartNew(() =>
                     {
                         BeginNewGame((StartNewGameMessage)message);
@@ -44,18 +40,18 @@ namespace NewGameProvider
         {
             this.aggregator = aggregator;
         }
-        #endregion
 
         public NewGameProvider()
         {
             _games = new List<Game>();
+            _logger = new Log4netManager();
         }
 
         private void BeginNewGame(StartNewGameMessage message)
         {
-            Log4netManager.DebugFormat(string.Format("Starting new game : {0}", message.DisplayString()), typeof(NewGameProvider));
+            _logger.DebugFormat(string.Format("Starting new game : {0}", message.DisplayString()), typeof(NewGameProvider));
             Game game = new Game(message);
-            game.ViewUrlChanged += game_ViewUrlChanged; 
+            game.ViewUrlChanged += game_ViewUrlChanged;
             _games.Add(game);
             game.BeginNewGame();
         }

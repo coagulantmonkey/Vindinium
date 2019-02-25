@@ -1,10 +1,7 @@
 ﻿using Common.Enums;
 using Common.Helpers;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Pathdinder
 {
@@ -18,10 +15,16 @@ namespace Pathdinder
         private Vector2D destination;
         private int boardHeight;
         private int boardWidth;
+        private Log4netManager _logger;
+
+        public Pathfinder()
+        {
+            _logger = new Log4netManager();
+        }
 
         public void CalculatePath(Vector2D startPoint, Vector2D endPoint, Tile[,] board)
         {
-            Log4netManager.DebugFormat(string.Format("Calculating path between {0} and {1}.", startPoint.DisplayString(), endPoint.DisplayString()),
+            _logger.DebugFormat(string.Format("Calculating path between {0} and {1}.", startPoint.DisplayString(), endPoint.DisplayString()),
                 typeof(Pathfinder));
 
             openNodes.Clear();
@@ -36,11 +39,11 @@ namespace Pathdinder
 
             if (BeginPathFinding())
             {
-                Log4netManager.DebugFormat("Path finding completed successfully.", typeof(Pathfinder));
+                _logger.DebugFormat("Path finding completed successfully.", typeof(Pathfinder));
             }
             else
             {
-                Log4netManager.DebugFormat("Path finding did not complete successfully.", typeof(Pathfinder));
+                _logger.DebugFormat("Path finding did not complete successfully.", typeof(Pathfinder));
             }
         }
 
@@ -181,13 +184,13 @@ namespace Pathdinder
             }
             else
             {
-                Log4netManager.ErrorFormat("Target node was not found in closed nodes list when trying to construct path.", typeof(Pathfinder));
+                _logger.ErrorFormat("Target node was not found in closed nodes list when trying to construct path.", typeof(Pathfinder));
             }
 
-            Log4netManager.DebugFormat("Steps to destination :", typeof(Pathfinder));
+            _logger.DebugFormat("Steps to destination :", typeof(Pathfinder));
             foreach (AStarNode node in path)
             {
-                Log4netManager.DebugFormat(node.WorldPosition.DisplayString(), typeof(Pathfinder));
+                _logger.DebugFormat(node.WorldPosition.DisplayString(), typeof(Pathfinder));
             }
         }
 
@@ -200,8 +203,8 @@ namespace Pathdinder
 
                 Vector2D directionVector = nextNode.WorldPosition.Subtract(currentPosition);
 
-                Log4netManager.DebugFormat(string.Format("Current position is {0}.", currentPosition.DisplayString()), typeof(Pathfinder));
-                Log4netManager.DebugFormat(string.Format("Next node position is {0}.", nextNode.WorldPosition.DisplayString()), typeof(Pathfinder));
+                _logger.DebugFormat(string.Format("Current position is {0}.", currentPosition.DisplayString()), typeof(Pathfinder));
+                _logger.DebugFormat(string.Format("Next node position is {0}.", nextNode.WorldPosition.DisplayString()), typeof(Pathfinder));
 
                 if (directionVector.Length() == 1)
                 {
@@ -224,16 +227,16 @@ namespace Pathdinder
                 }
                 else
                 {
-                    Log4netManager.ErrorFormat(string.Format("Direction vector was not equal to 1. Length() returned {0}. Returning stay command.", 
+                    _logger.ErrorFormat(string.Format("Direction vector was not equal to 1. Length() returned {0}. Returning stay command.",
                         directionVector.Length()), typeof(Pathfinder));
-                    Log4netManager.ErrorFormat(string.Format("Direction vector is {0}.", directionVector.DisplayString()), typeof(Pathfinder));
+                    _logger.ErrorFormat(string.Format("Direction vector is {0}.", directionVector.DisplayString()), typeof(Pathfinder));
 
                     path.Clear();
                 }
             }
             else
             {
-                Log4netManager.ErrorFormat("Tried to get next move and the path was empty. Returning stay command.", typeof(Pathfinder));
+                _logger.ErrorFormat("Tried to get next move and the path was empty. Returning stay command.", typeof(Pathfinder));
             }
 
             return Direction.Stay;

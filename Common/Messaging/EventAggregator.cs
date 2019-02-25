@@ -1,5 +1,4 @@
-﻿using Common.Messaging;
-using Common.Messaging.Messages;
+﻿using Common.Messaging.Messages;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -7,15 +6,12 @@ using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Common.Helpers;
 
 namespace Common.Messaging
 {
     public sealed class EventAggregator
     {
-        #region Members
         private static readonly EventAggregator instance = new EventAggregator();
         [ImportMany(typeof(IMessageConsumer))]
         private IEnumerable<IMessageConsumer> discoveredListeners;
@@ -23,16 +19,14 @@ namespace Common.Messaging
         private ConcurrentDictionary<Type, List<IMessageConsumer>> listeners =
             new ConcurrentDictionary<Type, List<IMessageConsumer>>();
         private static readonly object listLock = new object();
-        #endregion
+        private readonly Log4netManager _logger;
 
-        #region Singleton Implementation
         static EventAggregator()
         {
         }
 
         private EventAggregator()
         {
-            //Initialise();
         }
 
         public static EventAggregator Instance
@@ -42,7 +36,6 @@ namespace Common.Messaging
                 return instance;
             }
         }
-        #endregion
 
         public void Initialise()
         {
@@ -57,7 +50,7 @@ namespace Common.Messaging
             }
             else
             {
-                Log4netManager.DebugFormat("No listeners discovered.", typeof(EventAggregator));
+                _logger.DebugFormat("No listeners discovered.", typeof(EventAggregator));
             }
         }
 
@@ -74,11 +67,11 @@ namespace Common.Messaging
             }
             catch (CompositionException compositionEx)
             {
-                Log4netManager.LogException("EventAggregator not Initialised correctly.", compositionEx, typeof(EventAggregator));
+                _logger.LogException("EventAggregator not Initialised correctly.", compositionEx, typeof(EventAggregator));
             }
             catch (Exception ex)
             {
-                Log4netManager.LogException("EventAggregator not Initialised correctly.", ex, typeof(EventAggregator));
+                _logger.LogException("EventAggregator not Initialised correctly.", ex, typeof(EventAggregator));
             }
         }
 
@@ -109,14 +102,14 @@ namespace Common.Messaging
                         return existingList;
                     });
 
-                Log4netManager.DebugFormat(string.Format("Added {0} as a listener for {1}.", listener.GetType().Name, messageType.Name),
+                _logger.DebugFormat(string.Format("Added {0} as a listener for {1}.", listener.GetType().Name, messageType.Name),
                     typeof(EventAggregator));
 
                 return true;
             }
             catch (Exception ex)
             {
-                Log4netManager.LogException(string.Format("Could not add {0} as a listener for {1}.", listener.GetType().Name, messageType.Name),
+                _logger.LogException(string.Format("Could not add {0} as a listener for {1}.", listener.GetType().Name, messageType.Name),
                     ex, typeof(EventAggregator));
 
                 return false;
@@ -125,12 +118,12 @@ namespace Common.Messaging
 
         public void ProcessMessage(InternalMessage message)
         {
-            Log4netManager.DebugFormat(string.Format("Message of type {0} received.", message.GetType()), typeof(EventAggregator));
+            _logger.DebugFormat(string.Format("Message of type {0} received.", message.GetType()), typeof(EventAggregator));
 
             if (listeners.ContainsKey(message.GetType()))
             {
                 List<IMessageConsumer> messageConsumers = listeners[message.GetType()];
-                Log4netManager.DebugFormat(string.Format("{0} listeners found for {1}.", messageConsumers.Count, message.GetType()), typeof(EventAggregator));
+                _logger.DebugFormat(string.Format("{0} listeners found for {1}.", messageConsumers.Count, message.GetType()), typeof(EventAggregator));
 
                 foreach (IMessageConsumer messageConsumer in messageConsumers)
                 {
@@ -139,7 +132,7 @@ namespace Common.Messaging
             }
             else
             {
-                Log4netManager.WarnFormat(string.Format("No listeners found for {0}.", message.GetType()), typeof(EventAggregator));
+                _logger.WarnFormat(string.Format("No listeners found for {0}.", message.GetType()), typeof(EventAggregator));
             }
         }
     }

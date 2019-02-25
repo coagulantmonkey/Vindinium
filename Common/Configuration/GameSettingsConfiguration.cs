@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Configuration;
 
 namespace Common.Configuration
 {
@@ -15,7 +10,7 @@ namespace Common.Configuration
             get { return (string)this["PrivateKey"]; }
         }
 
-        [ConfigurationProperty("ServerURL", IsRequired = false, DefaultValue = "http://vindinium.org")]
+        [ConfigurationProperty("ServerURL", IsRequired = false, DefaultValue = "")]
         public string ServerURL
         {
             get { return (string)this["ServerURL"]; }

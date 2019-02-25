@@ -5,7 +5,6 @@ using Common.Messaging.Messages;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,7 +14,8 @@ namespace VindiniumGame
 {
     public class Game
     {
-        #region Members
+        private readonly Log4netManager _logger;
+
         public string ID { get; set; }
         private string _playUrl;
         private string _viewUrl;
@@ -30,11 +30,10 @@ namespace VindiniumGame
         private AIManager _ai;
 
         public event EventHandler<string> ViewUrlChanged = delegate { };
-        #endregion
 
         public Game(StartNewGameMessage message)
         {
-            Log4netManager.DebugFormat("New game created.", typeof(Game));
+            _logger.DebugFormat("New game created.", typeof(Game));
 
             _ai = new AIManager();
 
@@ -90,7 +89,7 @@ namespace VindiniumGame
             }
             else if (_currentTurn >= _maxTurns)
             {
-                Log4netManager.DebugFormat("Game over!", typeof(Game));
+                _logger.DebugFormat("Game over!", typeof(Game));
             }
         }
 
@@ -247,7 +246,7 @@ namespace VindiniumGame
 
             foreach(string mapLine in mapLines)
             {
-                Log4netManager.DebugFormat(mapLine, typeof(Game));
+                _logger.DebugFormat(mapLine, typeof(Game));
             }
         }
     }
