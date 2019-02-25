@@ -3,3 +3,15 @@
 ################################################################################
 
 /.vs/vindinium/v15
+/AIController/bin/Debug
+/AIController/obj/Debug
+/Common/obj/Debug
+/ConfigProvider/obj/Debug
+/NewGameProvider/obj/Debug
+/Pathdinder/bin/Debug
+/Pathdinder/obj/Debug
+/VindiniumGame/bin/Debug
+/VindiniumGame/obj/Debug
+/vindiniumWPF/bin/Debug/Logs
+/vindiniumWPF/bin/Debug
+/vindiniumWPF/obj/Debug

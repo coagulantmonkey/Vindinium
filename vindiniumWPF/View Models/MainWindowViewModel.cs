@@ -19,10 +19,9 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Windows.Navigation;
 using System.Runtime.InteropServices;
-using Awesomium.Windows.Controls;
 
 namespace Common.View_Models
-{    
+{
     class MainWindowViewModel : ViewModelBase, IMessageConsumer
     {
         #region Members
@@ -30,7 +29,7 @@ namespace Common.View_Models
         public ICommand ShowDetailsWindowCommand { get; set; }
         public ICommand StartNewGameCommand { get; set; }
         public ObservableCollection<TabItem> Tabs { get; set; }
-        #endregion    
+        #endregion
 
         #region IMessageConsumer
         public List<Type> GetMessageTypesHandled()
@@ -119,10 +118,10 @@ namespace Common.View_Models
             }
             else
             {
-                Log4netManager.ErrorFormat("Received a Config Section that could not be cast to a Game Settings Configuration section, unable to start a new game", 
+                Log4netManager.ErrorFormat("Received a Config Section that could not be cast to a Game Settings Configuration section, unable to start a new game",
                     GetType());
             }
-        }       
+        }
 
         public void ProcessMessage(InternalMessage message)
         {
@@ -138,9 +137,9 @@ namespace Common.View_Models
             {
                 TabItem tabItem = new TabItem();
                 tabItem.Header = message.ViewUrl;
-                WebControl webControl = new WebControl();
-                tabItem.Content = webControl;
-                webControl.Source = new Uri(message.ViewUrl);
+                WebBrowser webBrowser = new WebBrowser();
+                tabItem.Content = webBrowser;
+                webBrowser.Source = new Uri(message.ViewUrl);
 
                 Tabs.Add(tabItem);
             });
